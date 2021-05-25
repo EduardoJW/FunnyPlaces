@@ -14,9 +14,7 @@ public class RoomPlayerUIControler : NetworkBehaviour
     public int playerNumber {get;private set;} = 0;
     public bool isReadyToPlay {get;private set;} = false;
 
-
-
-
+    
     [Header("UI Elements")]
     [SerializeField] private Image player1Controls = null;
     [SerializeField] private Image player2Controls = null;
@@ -39,15 +37,14 @@ public class RoomPlayerUIControler : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         if (isLocalPlayer){
             gameObject.transform.Find("LobbyPlayerHUD").gameObject.SetActive(true);
             startupUI();
-        } 
-
-
-        
+        }
+            
     }
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -174,6 +171,11 @@ public class RoomPlayerUIControler : NetworkBehaviour
                 playerChoiceScript.player3Ready = ready;
                 break;
         } 
+    }
+
+    [ClientRpc]
+    public void RpcDisableUI(){
+        gameObject.transform.Find("LobbyPlayerHUD").gameObject.SetActive(false);
     }
 
     public void UpdateOtherPlayersDisplay(){

@@ -36,8 +36,15 @@ public class ServerLobbyControler : MonoBehaviour
     }
 
     public void startGame(){
+        GameObject[] roomPlayerArray = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject roomPlayer in roomPlayerArray){
+            roomPlayer.GetComponent<RoomPlayerUIControler>().RpcDisableUI();
+        }
+        
         networkRoomManagerScript.ServerChangeScene("MainTown");
     }
+
+
 
     
 }

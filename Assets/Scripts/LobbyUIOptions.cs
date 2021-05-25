@@ -32,7 +32,7 @@ public class LobbyUIOptions : NetworkBehaviour
         if(!isServer){
             //PlayerChoiceTracking playerChoices = playerChoiceMonitorDummyObject.GetComponent<PlayerChoiceTracking>();
             playerCount = GameObject.FindGameObjectsWithTag("Player").Length;
-            Debug.Log(playerCount);
+            
             switch (playerCount){
                 case 0:
                     playe2ControlPanel.SetActive(false);

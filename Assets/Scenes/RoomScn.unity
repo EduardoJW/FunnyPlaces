@@ -15280,7 +15280,7 @@ GameObject:
   - component: {fileID: 1127884318}
   m_Layer: 0
   m_Name: DummyObjectPlayerOptions
-  m_TagString: Untagged
+  m_TagString: PlayerOptionsContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15306,6 +15306,7 @@ MonoBehaviour:
   p1CharId: 1
   p2CharId: 1
   p3CharId: 1
+  localPlayerPlayerNumber: 0
 --- !u!114 &1127884319
 MonoBehaviour:
   m_ObjectHideFlags: 0

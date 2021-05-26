@@ -26,6 +26,9 @@ public class PlayerChoiceTracking : NetworkBehaviour
     [SyncVar]
     public int p3CharId =1;
 
+    public int localPlayerPlayerNumber = 0;
+
+
 
 
     // Start is called before the first frame update

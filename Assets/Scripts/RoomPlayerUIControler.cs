@@ -13,6 +13,7 @@ public class RoomPlayerUIControler : NetworkBehaviour
     public int charID {get;private set;} = startingCharNumber;
     public int playerNumber {get;private set;} = 0;
     public bool isReadyToPlay {get;private set;} = false;
+    
 
     
     [Header("UI Elements")]
@@ -54,7 +55,8 @@ public class RoomPlayerUIControler : NetworkBehaviour
 
 
     public void startupUI(){
-        playerNumber = GameObject.FindGameObjectsWithTag("Player").Length;
+        playerNumber = GameObject.FindGameObjectsWithTag("RoomPlayer").Length;
+        RegisterPlayerNumber(playerNumber);
         player1Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + charID.ToString());
         player2Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + charID.ToString());
         player3Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + charID.ToString());
@@ -80,7 +82,7 @@ public class RoomPlayerUIControler : NetworkBehaviour
 
       public void nextChar(){
         charID++;
-        if (charID > 8) charID =1;
+        if (charID > 8) charID =0;
         switch (playerNumber){
             case 1:
                 player1Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + charID.ToString());
@@ -99,7 +101,7 @@ public class RoomPlayerUIControler : NetworkBehaviour
 
     public void previousChar(){
         charID--;
-        if (charID < 1) charID =8;
+        if (charID < 0) charID =8;
         switch (playerNumber){
             case 1:
                 player1Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + charID.ToString());
@@ -117,7 +119,6 @@ public class RoomPlayerUIControler : NetworkBehaviour
     }
 
     public void ToggleReady(){
-        Debug.Log(playerNumber);
         isReadyToPlay=!isReadyToPlay;
         switch (playerNumber){
             case 1:
@@ -183,9 +184,9 @@ public class RoomPlayerUIControler : NetworkBehaviour
         playerChoiceScript = GameObject.Find("DummyObjectPlayerOptions").GetComponent<PlayerChoiceTracking>();
         if (playerNumber != 1){
             if (playerChoiceScript.player1Ready){
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player1ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Pronto";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player1ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=green>Pronto</color>";
             }else{
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player1ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Escolhendo...";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player1ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=red>Escolhendo...</color>";
             }
             if (player1Card.sprite.name != (playerImagePrefix + playerChoiceScript.p1CharId.ToString()) ){
                 player1Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + playerChoiceScript.p1CharId.ToString());
@@ -194,9 +195,9 @@ public class RoomPlayerUIControler : NetworkBehaviour
         
         if (playerNumber != 2){
             if (playerChoiceScript.player2Ready){
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player2ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Pronto";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player2ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=green>Pronto</color>";
             }else{
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player2ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Escolhendo...";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player2ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=red>Escolhendo...</color>";
             }
             if (player2Card.sprite.name != (playerImagePrefix + playerChoiceScript.p2CharId.ToString()) ){
                 player2Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + playerChoiceScript.p2CharId.ToString());
@@ -205,14 +206,20 @@ public class RoomPlayerUIControler : NetworkBehaviour
 
         if (playerNumber != 3){
             if (playerChoiceScript.player3Ready){
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player3ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Pronto";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player3ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=green>Pronto</color>";
             }else{
-                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player3ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "Escolhendo...";
+                gameObject.transform.Find("LobbyPlayerHUD/PlayerSelectPanel/Player3ReadyText").gameObject.GetComponentInChildren<TMPro.TMP_Text>().text = "<color=red>Escolhendo...</color>";
             }
             if (player3Card.sprite.name != (playerImagePrefix + playerChoiceScript.p3CharId.ToString()) ){
                 player3Card.sprite=Resources.Load<Sprite>("Sprites/" + playerImagePrefix + playerChoiceScript.p3CharId.ToString());
             }
         }
+    }
+
+    public void RegisterPlayerNumber(int localPlayerNumber){
+        PlayerChoiceTracking playerChoiceScript; 
+        playerChoiceScript = GameObject.Find("DummyObjectPlayerOptions").GetComponent<PlayerChoiceTracking>();
+        playerChoiceScript.localPlayerPlayerNumber = localPlayerNumber; 
     }
 
 

@@ -198,8 +198,8 @@ GameObject:
   - component: {fileID: 7568505531444668788}
   - component: {fileID: 6725147035860706642}
   m_Layer: 0
-  m_Name: RoomPlayer
-  m_TagString: Player
+  m_Name: RoomPlayerFunnyPlaces
+  m_TagString: RoomPlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -266,6 +266,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  playerNumber: 0
   player1Controls: {fileID: 8131932713255197437}
   player2Controls: {fileID: 3618523037769267962}
   player3Controls: {fileID: 7140388835589553923}

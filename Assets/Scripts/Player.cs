@@ -11,6 +11,9 @@ public class Player : NetworkBehaviour
     private GameObject clickedObject;
     public float interactDistance;
     private GameObject playercharacterchoice;
+    public static string[,] characterModelMapping= new string [9,2] {{"1","Character_Father_01"},{"2","Character_SchoolBoy_01"},{"3","Character_Mother_02"},{"4","Character_Father_02"},{"5","Character_Daughter_01"},{"6","Character_Mother_01"},{"7","Character_SchoolGirl_01"},{"8","Character_ShopKeeper_01"},{"9","Character_Son_01"}};
+    public int playerIdNumber = 0;
+
 
     [Header("Movement")]
         public float rotationSpeed = 100;
@@ -26,16 +29,25 @@ public class Player : NetworkBehaviour
         if (isLocalPlayer){
             playerCamera.SetActive(true);
             cam = playerCamera.GetComponent<Camera>();
-            
-            /*if (charactertype >1){
-                gameObject.transform.Find("Character_Father_01").gameObject.SetActive(false);
-                gameObject.transform.Find("Character_Father_02").gameObject.SetActive(true);
-            }else{
-                gameObject.transform.Find("Character_Father_01").gameObject.SetActive(false);
-                gameObject.transform.Find("Character_Mother_01").gameObject.SetActive(true);
-            }*/
+            playerIdNumber = getCharacterId();
+            switch (playerIdNumber){
+                case 1:
+                    CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p1CharId);
+                    break;
+                case 2:
+                    CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p2CharId);
+                    break;
+                case 3:
+                    CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p3CharId);
+                    break;
 
+            }
         }
+
+        if (!isServer){
+            DisableServerControls();
+        }
+
 
 
         
@@ -47,17 +59,7 @@ public class Player : NetworkBehaviour
         // movement for local player
         if (!isLocalPlayer) return;
 
-        /*
-        //movement 1
-        float horizontal = Input.GetAxis("Horizontal");
-        transform.Rotate(0, horizontal * rotationSpeed * Time.deltaTime, 0);
-        float vertical = Input.GetAxis("Vertical");
-        Vector3 forward = transform.TransformDirection(Vector3.forward);
-        */
 
-        
-
-        //movement 2
         float x= Input.GetAxis("Horizontal")* Time.deltaTime *150.0f;
         float z = Input.GetAxis("Vertical")*Time.deltaTime *3.0f;
         
@@ -89,20 +91,49 @@ public class Player : NetworkBehaviour
                         Destroy(clickedObject);
                     }else{
                         Debug.Log("O objeto está muito longe!");
-                    }
-                    
+                    }   
+                }
+            }
+        }
+    }
+    
+
+    [Command]
+    public void CmdChangePlayerCharacterModel(int charNumber){
+        foreach(Transform child in gameObject.transform){
+            if (child.CompareTag("PlayerCharacterModel")){
+                child.gameObject.SetActive(false);
+                if (child.gameObject.name == characterModelMapping[charNumber,1]){
+                    child.gameObject.SetActive(true);
                 }
                 
-    
             }
 
+        }
+        RpcNotifyClientsPlayerCharacterModelChange(charNumber);
+    }
 
+    [ClientRpc]
+    public void RpcNotifyClientsPlayerCharacterModelChange(int charNumber){
+        foreach(Transform child in gameObject.transform){
+            if (child.CompareTag("PlayerCharacterModel")){
+                child.gameObject.SetActive(false);
+                if (child.gameObject.name == characterModelMapping[charNumber,1]){
+                    child.gameObject.SetActive(true);
+                }
+                
+            }
 
         }
-
-
-
-
-
     }
+
+    public int getCharacterId(){
+        PlayerChoiceTracking playerChoices = GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>();
+        return playerChoices.localPlayerPlayerNumber;
+    }
+
+    public void DisableServerControls(){
+        GameObject.Find("ServerManager").SetActive(false);
+    }
+
 }

@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Pickupable
   - ServerCamera
+  - PlayerOptionsContainer
+  - RoomPlayer
+  - PlayerCharacterModel
   layers:
   - Default
   - TransparentFX

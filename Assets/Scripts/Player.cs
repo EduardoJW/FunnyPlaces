@@ -133,7 +133,11 @@ public class Player : NetworkBehaviour
     }
 
     public void DisableServerControls(){
-        GameObject.Find("ServerManager").SetActive(false);
+        GameObject sm = GameObject.Find("ServerManager");
+        if (sm){
+            sm.SetActive(false);
+        }
+        
     }
 
 }

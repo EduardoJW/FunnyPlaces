@@ -14,6 +14,11 @@ public class RoomPlayerUIControler : NetworkBehaviour
     public int playerNumber {get;private set;} = 0;
     public bool isReadyToPlay {get;private set;} = false;
     
+    
+
+    
+    
+
 
     
     [Header("UI Elements")]
@@ -222,8 +227,7 @@ public class RoomPlayerUIControler : NetworkBehaviour
         playerChoiceScript.localPlayerPlayerNumber = localPlayerNumber; 
     }
 
-
-
+    
 
 
 

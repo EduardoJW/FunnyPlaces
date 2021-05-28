@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -26,9 +26,7 @@ using Mirror;
             public GameObject roomPlayer;
         }
 
-        public int teste1;
-        
-
+       
         [Header("Room Settings")]
 
         [FormerlySerializedAs("m_ShowRoomGUI")]

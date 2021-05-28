@@ -2,9 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using UnityEngine.UI;
+
 
 public class Player : NetworkBehaviour
 {
+    public static Dictionary<string,string> hotelDecorationMapping = new Dictionary<string,string>{
+        {"SonoBom","quadro colorido na parede."},
+        {"DormeBem","quadro com o homem de chapéu na parede."},
+        {"RoncoAlto","quadro com o casal de guarda-chuva na parede."}
+    };   
+    
+
+
+    
     private Animator animatorController;
     public GameObject playerCamera;
     private Camera cam;
@@ -13,6 +24,26 @@ public class Player : NetworkBehaviour
     private GameObject playercharacterchoice;
     public static string[,] characterModelMapping= new string [9,2] {{"1","Character_Father_01"},{"2","Character_SchoolBoy_01"},{"3","Character_Mother_02"},{"4","Character_Father_02"},{"5","Character_Daughter_01"},{"6","Character_Mother_01"},{"7","Character_SchoolGirl_01"},{"8","Character_ShopKeeper_01"},{"9","Character_Son_01"}};
     public int playerIdNumber = 0;
+
+    
+    
+    public string[] localPlayerMissionItems = new string[3];
+    public string localPlayerHotel;
+    public bool localPlayerCalcularCompra;
+    public int localPlayerWorkingMemoryDigits;
+
+    public Text xyz;
+
+
+    private string wellcomeString ="Bem Vindo a Lugares Divertidos!!!\n"+
+     "A festa de 80 anos do seu amigo vai ser um arraso! \n"+
+    "Mas para isso você precisa encontrar alguns itens e "+
+    "trazê-los para a festa e trazê-los de volta ao seu hotel. \n"+
+    "Aqui está sua Lista:\n\n"+
+    "- 1 {0}\n"+
+    "- 1 {1}\n"+
+    "- 1 {2}\n\n"+
+    "Boa Sorte! Ah! E lembre-se seu hotel é o Hotel {3}, aquele com o {4}!";
 
 
     [Header("Movement")]
@@ -46,6 +77,11 @@ public class Player : NetworkBehaviour
 
         if (!isServer){
             DisableServerControls();
+        }
+
+        if (isLocalPlayer){
+            RegisterMissionLocalPlayerMissionItemsGameOptions(playerIdNumber);
+            showWellcomePopUp();
         }
 
 
@@ -138,6 +174,50 @@ public class Player : NetworkBehaviour
             sm.SetActive(false);
         }
         
+    }
+
+    public void RegisterMissionLocalPlayerMissionItemsGameOptions(int playerId){
+        PlayerChoiceTracking playerChoices = GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>();
+        switch (playerId){
+            case 1:
+                localPlayerMissionItems[0]= playerChoices.p1Item1;
+                localPlayerMissionItems[1]= playerChoices.p1Item2;
+                localPlayerMissionItems[2]= playerChoices.p1Item3;
+                localPlayerHotel = playerChoices.p1Hotel;
+                localPlayerCalcularCompra = playerChoices.p1CalcularCompra;
+                localPlayerWorkingMemoryDigits = playerChoices.p1WorkingMemoryDigits;
+                break;
+            case 2:
+                localPlayerMissionItems[0]= playerChoices.p2Item1;
+                localPlayerMissionItems[1]= playerChoices.p2Item2;
+                localPlayerMissionItems[2]= playerChoices.p2Item3;
+                localPlayerHotel = playerChoices.p2Hotel;
+                localPlayerCalcularCompra = playerChoices.p2CalcularCompra;
+                localPlayerWorkingMemoryDigits = playerChoices.p2WorkingMemoryDigits;
+                break;
+            case 3:
+                localPlayerMissionItems[0]= playerChoices.p3Item1;
+                localPlayerMissionItems[1]= playerChoices.p3Item2;
+                localPlayerMissionItems[2]= playerChoices.p3Item3;
+                localPlayerHotel = playerChoices.p3Hotel;
+                localPlayerCalcularCompra = playerChoices.p3CalcularCompra;
+                localPlayerWorkingMemoryDigits = playerChoices.p3WorkingMemoryDigits;
+                break;
+        
+        }
+
+    }
+
+    public void showWellcomePopUp(){
+                                   
+        gameObject.transform.Find("HUD/WellcomeMessagePopUp").gameObject.SetActive(true);
+        gameObject.transform.Find("HUD/WellcomeMessagePopUp/Panel_PopUpWindow/Panel_Content/WellcomeMessage").gameObject.GetComponent<Text>().text=
+        string.Format(wellcomeString,localPlayerMissionItems[0],localPlayerMissionItems[1],localPlayerMissionItems[2],localPlayerHotel,getHotelDecorationTip(localPlayerHotel));
+    }
+
+
+    public string getHotelDecorationTip(string hotelName){
+        return hotelDecorationMapping[hotelName];
     }
 
 }

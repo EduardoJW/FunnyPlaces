@@ -9,6 +9,7 @@ TagManager:
   - PlayerOptionsContainer
   - RoomPlayer
   - PlayerCharacterModel
+  - RefreshmentPoint
   layers:
   - Default
   - TransparentFX

@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class FindNearestPlayer : MonoBehaviour
 {
-    public GameObject indicationArrow;
+    private GameObject indicationArrow;
     public float timeNearestPlayerIndicationStart=0.0f;
-    public float maximumTimeNearestPlayerIndicationShowed = 10.0f;
-    public float minimumDeltaTimeToAllowPlayerSearch = 30.0f;
+    public float maximumTimeNearestPlayerIndicationShowed = 20.0f;
+    public float minimumDeltaTimeToAllowPlayerSearch = 40.0f;
     
     private int localPlayerNumber;
     public GameObject[] gamePlayersArray;
@@ -15,30 +16,35 @@ public class FindNearestPlayer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gamePlayersArray = GameObject.FindGameObjectsWithTag("Player");
-        
+        indicationArrow = gameObject.transform.root.gameObject.transform.Find("Arrow").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameObject.activeSelf==true){
+
+        if (indicationArrow.activeSelf==true){
             if (!isNearestPlayerIndicationShown()){
                 indicationArrow.SetActive(false);                
             }else{
                 pointToNearestPlayer();
             }
-
-
         }
-        
+
+        if (gameObject.GetComponent<Button>().interactable == false){
+            if ((Time.time-timeNearestPlayerIndicationStart) >= minimumDeltaTimeToAllowPlayerSearch){
+                gameObject.GetComponent<Button>().interactable = true;
+            }
+        }
         
     }
 
     public void showNearestPlayer(){
         if ((timeNearestPlayerIndicationStart == 0.0) || ((Time.time - timeNearestPlayerIndicationStart) > minimumDeltaTimeToAllowPlayerSearch)){
             timeNearestPlayerIndicationStart = Time.time;
+            pointToNearestPlayer();
             indicationArrow.SetActive(true);
+            gameObject.GetComponent<Button>().interactable = false;
         }
 
     }
@@ -51,21 +57,24 @@ public class FindNearestPlayer : MonoBehaviour
     }
 
     public void pointToNearestPlayer(){
+        gamePlayersArray = GameObject.FindGameObjectsWithTag("Player");
         float minimumDistance = 100000000.0f;
-        GameObject localPlayer = gameObject.transform.parent.gameObject;
-        Vector3 nearestPlayerPosition = localPlayer.transform.position;
+        GameObject localPlayer = gameObject.transform.root.gameObject;
+        float distanceDifference;
         Vector3 differenceVector;
-        foreach (GameObject player in gamePlayersArray){
-            if ( localPlayer.transform.position  != player.transform.position){
-                if (Vector3.Distance(localPlayer.transform.position,player.transform.position) < minimumDistance){
-                    nearestPlayerPosition = player.transform.position;
-                    differenceVector = localPlayer.transform.position - nearestPlayerPosition;
-                    gameObject.transform.rotation = Quaternion.LookRotation(differenceVector.normalized);
+        int indiceMenorDistancia=0;
+        for (int indicePlayer =0;indicePlayer < gamePlayersArray.Length;indicePlayer++){
+            if ( localPlayer.transform.position  != gamePlayersArray[indicePlayer].transform.position){
+                distanceDifference = Vector3.Distance(localPlayer.transform.position,gamePlayersArray[indicePlayer].transform.position);
+                if (distanceDifference < minimumDistance){
+                    minimumDistance = distanceDifference;
+                    indiceMenorDistancia = indicePlayer;
                 }
-                
             }
-
         }
+        differenceVector = gamePlayersArray[indiceMenorDistancia].transform.position-localPlayer.transform.position;
+        indicationArrow.transform.rotation = Quaternion.LookRotation(differenceVector.normalized);
+                
         
     }
 

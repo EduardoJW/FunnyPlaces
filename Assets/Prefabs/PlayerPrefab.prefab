@@ -564,23 +564,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1149070171761296482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 162009135975311494}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eea71c06d00af3441bf81e73e21b2108, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  indicationArrow: {fileID: 162009135975311494}
-  timeNearestPlayerIndicationStart: 0
-  maximumTimeNearestPlayerIndicationShowed: 10
-  minimumDeltaTimeToAllowPlayerSearch: 30
-  gamePlayersArray: []
 --- !u!1 &270781203065491364
 GameObject:
   m_ObjectHideFlags: 0
@@ -2143,6 +2126,7 @@ GameObject:
   - component: {fileID: 5872109348822072726}
   - component: {fileID: 8468910381338903083}
   - component: {fileID: 2086166506727421415}
+  - component: {fileID: 5721093801317554312}
   m_Layer: 5
   m_Name: FindPlayerButton
   m_TagString: Untagged
@@ -2250,7 +2234,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1149070171761296482}
+      - m_Target: {fileID: 5721093801317554312}
         m_MethodName: showNearestPlayer
         m_Mode: 1
         m_Arguments:
@@ -2261,6 +2245,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5721093801317554312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1822697184350486425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eea71c06d00af3441bf81e73e21b2108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeNearestPlayerIndicationStart: 0
+  maximumTimeNearestPlayerIndicationShowed: 30
+  minimumDeltaTimeToAllowPlayerSearch: 35
+  gamePlayersArray: []
 --- !u!1 &2085727271776502138
 GameObject:
   m_ObjectHideFlags: 0
@@ -11737,8 +11737,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8887203767155692769}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8881795556962060463}
@@ -12224,8 +12224,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8887398818917504087}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25, y: 0, z: 18.8}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8881843644049170689}
@@ -14057,16 +14057,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5df36e5356de98641a6c7be659ad77b2,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df36e5356de98641a6c7be659ad77b2, type: 3}
---- !u!1 &162009135975311494 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 5df36e5356de98641a6c7be659ad77b2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1080577636169684439}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &681242973255332412 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5df36e5356de98641a6c7be659ad77b2,

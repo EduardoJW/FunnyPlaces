@@ -227,6 +227,21 @@ public class RoomPlayerUIControler : NetworkBehaviour
         playerChoiceScript.localPlayerPlayerNumber = localPlayerNumber; 
     }
 
+    [ClientRpc]
+    public void RpcShowQuestionnaire(int playerNumber){
+        Debug.Log("RPC");
+        if (isLocalPlayer){
+            if (playerNumber == GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().localPlayerPlayerNumber){
+                gameObject.transform.Find("QuestionnaireCanvas").gameObject.SetActive(true);
+            }
+        }
+    }
+
+    [Command]
+    public void CmdNotifyServerQuestionaireCompleted(int playerNumber){
+        GameObject.Find("P"+ playerNumber + "QuestionarioRespondidoCheckbox").GetComponent<Toggle>().isOn = true;
+    }
+
     
 
 

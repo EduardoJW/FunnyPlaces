@@ -10121,7 +10121,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 608130092}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849907148}
+        m_MethodName: SendQuestionnairie
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 608130091}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &608130092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14855,7 +14866,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 918310345}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849907148}
+        m_MethodName: SendQuestionnairie
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 918310344}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &918310345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25937,7 +25959,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1827883024}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1849907148}
+        m_MethodName: SendQuestionnairie
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1827883023}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Button, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1827883024
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26645,6 +26678,7 @@ GameObject:
   - component: {fileID: 1849907145}
   - component: {fileID: 1849907147}
   - component: {fileID: 1849907146}
+  - component: {fileID: 1849907148}
   m_Layer: 5
   m_Name: GamerProfileQuestionaire
   m_TagString: Untagged
@@ -26721,6 +26755,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1849907144}
   m_CullTransparentMesh: 0
+--- !u!114 &1849907148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849907144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1745809a60c3954dab071d47160fd85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerOptionsTracker: {fileID: 1127884317}
+  solicitarQuestionarioButtonP1: {fileID: 1827883023}
+  questionarioConcluidoToggleP1: {fileID: 1206210840}
+  solicitarQuestionarioButtonP2: {fileID: 918310344}
+  questionarioConcluidoToggleP2: {fileID: 20661410}
+  solicitarQuestionarioButtonP3: {fileID: 608130091}
+  questionarioConcluidoToggleP3: {fileID: 904477135}
 --- !u!1 &1850678120
 GameObject:
   m_ObjectHideFlags: 0

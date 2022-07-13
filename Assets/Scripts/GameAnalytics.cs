@@ -8,47 +8,47 @@ public class GameAnalytics : NetworkBehaviour
 {
     public float M1_DistânciaTotalPercorrida = 0;
     public float M2_TotalDeDinheiroGasto = 0;
-    public float[] M3_TempoParaDigitarASenha;
-    public float[] M4_TempoParaEncontrarJogadoresNoTutorial;
+    public List<float> M3_TempoParaDigitarASenha = new List<float>();
+    public List<float> M4_TempoParaEncontrarJogadoresNoTutorial = new List<float>();
     public float M5_DistânciaPercorridaDuranteOTutorial = 0;
-    public int[] M6_DificuldadeDosItensDaLista;
+    public List<int> M6_DificuldadeDosItensDaLista = new List<int>();
     public int M7_QuantidadeDeVezesQueTentouSeHidratar = 0;
     public int M8_QuantidadeDeVezesQueSeHidratou = 0;
     public List<string> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<string>();
     public int M10_AcionamentosDoBotaoDeInteracaoSocial = 0;
     public int M11_AcionamentosDoBotaoDeDoacaoDeCupom = 0;
     public int M12_AcionamentosDoBotaoDeJogadorMaisProximo = 0;
-    public bool[] M13_RecuperacaoDeUmItemPerdido;
-    public int[] M14_TamanhoDaSenhaDigitada;
-    public float[] M15_RazaoEntreValorDaCompraEValorDosItens;
+    public List<bool> M13_RecuperacaoDeUmItemPerdido = new List<bool>();
+    public List<int> M14_TamanhoDaSenhaDigitada = new List<int>();
+    public List<float> M15_RazaoEntreValorDaCompraEValorDosItens = new List<float>();
     public int M16_QuantidadeDeVezesQueAEnergiaSeEsgotou = 0;
-    public int M17_OrdemEmQueAdquiriuOItemDePrioridade;
-    public bool M18_ObteveItemDeCombinacao;
+    public int M17_OrdemEmQueAdquiriuOItemDePrioridade= 0;
+    public bool M18_ObteveItemDeCombinacao = false;
     public int M19_QuantidadeDeVezesQueOBotaoDeInteracaoSocialFicouDisponivel = 0;
     public int M20_QuantidadeDeAnimacoesAcionadas = 0;
     public float M21_CreditosAoFinalDaPartida= 2000.0f;
     public bool M22_OpcaoDeLevarOsAmigosAoSobrevoo = false;
-    public int M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens =0;
-    public int[] M24_QuantidadeDeVezesQueAcionouOBotaoDeDicaDeItem;
-    public int M25_QuantidadeDeVezesQueInteragiu;
+    public int M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens = 0;
+    public List<int> M24_QuantidadeDeVezesQueAcionouOBotaoDeDicaDeItem = new List<int>();
+    public int M25_QuantidadeDeVezesQueInteragiu = 0;
 
     public class Analytics 
     {
         public float M1_DistânciaTotalPercorrida;
         public float M2_TotalDeDinheiroGasto;
-        public float[] M3_TempoParaDigitarASenha;
-        public float[] M4_TempoParaEncontrarJogadoresNoTutorial;
+        public List<float> M3_TempoParaDigitarASenha = new List<float>();
+        public List<float> M4_TempoParaEncontrarJogadoresNoTutorial = new List<float>();
         public float M5_DistânciaPercorridaDuranteOTutorial;
-        public int[] M6_DificuldadeDosItensDaLista;
+        public List<int> M6_DificuldadeDosItensDaLista = new List<int>();
         public int M7_QuantidadeDeVezesQueTentouSeHidratar;
         public int M8_QuantidadeDeVezesQueSeHidratou;
         public List<string> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<string>();
         public int M10_AcionamentosDoBotaoDeInteracaoSocial;
         public int M11_AcionamentosDoBotaoDeDoacaoDeCupom;
         public int M12_AcionamentosDoBotaoDeJogadorMaisProximo;
-        public bool[] M13_RecuperacaoDeUmItemPerdido;
-        public int[] M14_TamanhoDaSenhaDigitada;
-        public float[] M15_RazaoEntreValorDaCompraEValorDosItens;
+        public List<bool> M13_RecuperacaoDeUmItemPerdido = new List<bool>();
+        public List<int> M14_TamanhoDaSenhaDigitada = new List<int>();
+        public List<float> M15_RazaoEntreValorDaCompraEValorDosItens = new List<float>();
         public int M16_QuantidadeDeVezesQueAEnergiaSeEsgotou;
         public int M17_OrdemEmQueAdquiriuOItemDePrioridade;
         public bool M18_ObteveItemDeCombinacao;
@@ -57,14 +57,14 @@ public class GameAnalytics : NetworkBehaviour
         public float M21_CreditosAoFinalDaPartida;
         public bool M22_OpcaoDeLevarOsAmigosAoSobrevoo;
         public int M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens;
-        public int[] M24_QuantidadeDeVezesQueAcionouOBotaoDeDicaDeItem;
+        public List<int> M24_QuantidadeDeVezesQueAcionouOBotaoDeDicaDeItem = new List<int>();
         public int M25_QuantidadeDeVezesQueInteragiu;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

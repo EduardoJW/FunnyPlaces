@@ -552,13 +552,14 @@ public class PlayerControler : NetworkBehaviour
 
     [Command]
     public void CmdUpdateMovimento(){
-        gameObject.GetComponent<GameAnalytics>().M1_DistânciaTotalPercorrida++;
+        gameObject.GetComponent<GameAnalytics>().M1_DistânciaTotalPercorrida++;      
     }
     [Command]
     public void CmdUpdateMovimentoTutorial()
     {
         gameObject.GetComponent<GameAnalytics>().M5_DistânciaPercorridaDuranteOTutorial++;
-        
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M5_DistânciaPercorridaDuranteOTutorial++;
+
     }
 
     [Command]
@@ -571,17 +572,20 @@ public class PlayerControler : NetworkBehaviour
     public void CmdUpdatetotalCreditos(float valor)
     {
         gameObject.GetComponent<GameAnalytics>().M21_CreditosAoFinalDaPartida -= valor;
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M21_CreditosAoFinalDaPartida -= valor;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueTentouSeHidratar()
     {
         gameObject.GetComponent<GameAnalytics>().M7_QuantidadeDeVezesQueTentouSeHidratar++;
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M7_QuantidadeDeVezesQueTentouSeHidratar++;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueSeHidratou(){
         gameObject.GetComponent<GameAnalytics>().M8_QuantidadeDeVezesQueSeHidratou++;
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M8_QuantidadeDeVezesQueSeHidratou++;
     }
 
     [Command]
@@ -589,17 +593,20 @@ public class PlayerControler : NetworkBehaviour
     {
         string val = valor.ToString();
         gameObject.GetComponent<GameAnalytics>().M9_ValorDaBarraDeEnergiaQuandoSeHidratou.Add(val);
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M9_ValorDaBarraDeEnergiaQuandoSeHidratou.Add(val);
     }
 
     [Command]
     public void CmdUpdateAcionouListaDeItens()
     {
         gameObject.GetComponent<GameAnalytics>().M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueInteragiu(){
         gameObject.GetComponent<GameAnalytics>().M25_QuantidadeDeVezesQueInteragiu++;
+        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M25_QuantidadeDeVezesQueInteragiu++;
     }
 
 }

@@ -12511,7 +12511,7 @@ GameObject:
   - component: {fileID: 8448517110567858214}
   - component: {fileID: 1285890985523984285}
   - component: {fileID: 2445594753051669586}
-  - component: {fileID: 3958487204699424606}
+  - component: {fileID: -8868421078891061643}
   m_Layer: 0
   m_Name: PlayerPrefab
   m_TagString: Player
@@ -12706,7 +12706,7 @@ MonoBehaviour:
   syncInterval: 0.1
   serverMessageFromPsychologist: 
   serverMessageArea: {fileID: 7060614185257584442}
---- !u!114 &3958487204699424606
+--- !u!114 &-8868421078891061643
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

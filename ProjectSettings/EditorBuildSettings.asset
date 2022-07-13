@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainTown.unity
     guid: 5df6eeaa3e60db641850fc10230ad95c
+  - enabled: 1
+    path: Assets/Scenes/TutorialMovimentacao.unity
+    guid: 90a9030883575ff4ab3bdf5b828995e0
+  - enabled: 1
+    path: Assets/Scenes/TutorialReconhecimento.unity
+    guid: a3feccb02d6be9d4d92568a5fc468da2
   m_configObjects: {}

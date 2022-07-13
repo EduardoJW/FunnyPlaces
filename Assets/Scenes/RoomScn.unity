@@ -448,6 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startGameButton: {fileID: 211045869}
   playerOptionsMonitor: {fileID: 1127884317}
+  baseGameplayScene: MainTown
   p1HotelCombobox: {fileID: 1063123284}
   p2HotelCombobox: {fileID: 765055726}
   p3HotelCombobox: {fileID: 710522898}
@@ -4071,7 +4072,7 @@ GameObject:
   - component: {fileID: 234504154}
   m_Layer: 5
   m_Name: Toggle
-  m_TagString: Untagged
+  m_TagString: TutorialToggle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4141,8 +4142,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
-  m_IsOn: 1
+      m_Calls:
+      - m_Target: {fileID: 11131154}
+        m_MethodName: togReconhecimento
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &244126210
 GameObject:
   m_ObjectHideFlags: 0
@@ -6995,8 +7007,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
-  m_IsOn: 1
+      m_Calls:
+      - m_Target: {fileID: 11131154}
+        m_MethodName: togTutorial
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  m_IsOn: 0
 --- !u!1 &430647322
 GameObject:
   m_ObjectHideFlags: 0
@@ -8583,7 +8606,7 @@ GameObject:
   - component: {fileID: 516383164}
   - component: {fileID: 516383163}
   m_Layer: 5
-  m_Name: GameOptionsPanel (4)
+  m_Name: GameOptionsPanel_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11983,7 +12006,7 @@ RectTransform:
   - {fileID: 2025747877}
   - {fileID: 1815833751}
   m_Father: {fileID: 1763470993}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -12422,7 +12445,7 @@ RectTransform:
   - {fileID: 37088940}
   - {fileID: 380590733}
   m_Father: {fileID: 1763470993}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -15130,8 +15153,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: choseType1
+      - m_Target: {fileID: 11131154}
+        m_MethodName: SaveGameplayConfigurationSettings
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16601,7 +16624,7 @@ RectTransform:
   - {fileID: 1907914851}
   - {fileID: 1484651213}
   m_Father: {fileID: 1763470993}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -17080,8 +17103,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: choseType2
+      - m_Target: {fileID: 11131154}
+        m_MethodName: OpenPreSet
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -20187,7 +20210,7 @@ RectTransform:
   - {fileID: 1770957236}
   - {fileID: 1151446378}
   m_Father: {fileID: 1763470993}
-  m_RootOrder: 10
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -24876,10 +24899,10 @@ RectTransform:
   - {fileID: 63092335}
   - {fileID: 2074822437}
   - {fileID: 283503970}
-  - {fileID: 1384938873}
   - {fileID: 1063123283}
   - {fileID: 765055725}
   - {fileID: 710522897}
+  - {fileID: 1384938873}
   - {fileID: 1785689104}
   - {fileID: 512568154}
   - {fileID: 1401212956}

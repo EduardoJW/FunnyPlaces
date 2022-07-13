@@ -10,6 +10,11 @@ TagManager:
   - RoomPlayer
   - PlayerCharacterModel
   - RefreshmentPoint
+  - NPC_Helper
+  - TutorialToggle
+  - Player2_Recognition_Model
+  - Player1_Recognition_Model
+  - Player3_Recognition_Model
   layers:
   - Default
   - TransparentFX

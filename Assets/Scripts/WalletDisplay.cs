@@ -12,11 +12,8 @@ public class WalletDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        walletMoney = gameObject.GetComponent<PlayerControler>().walletMoneyValue;
         walletMoneyText.text = walletMoney.ToString();
-        if (Input.GetKeyDown(KeyCode.Space)){
-            walletMoney = walletMoney - 100;
-
-        }
 
     }
 }

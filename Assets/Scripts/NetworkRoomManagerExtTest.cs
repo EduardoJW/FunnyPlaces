@@ -53,11 +53,22 @@ using Mirror;
         public string RoomScene;
 
         /// <summary>
-        /// The scene to use for the playing the game from the room. This is similar to the onlineScene of the NetworkManager.
+        /// The scene to use for playing the game from the room. This is similar to the onlineScene of the NetworkManager.
         /// </summary>
         [Scene]
         public string GameplayScene;
 
+        /// <summary>
+        /// The scene to use for the walking tutorial. This is similar to the onlineScene of the NetworkManager.
+        /// </summary>
+        [Scene]
+        public string TutorialScene;
+
+    
+        public int RecogPlayer1 = 0;
+        public int RecogPlayer2 = 0;
+        public int RecogPlayer3 = 0;
+        public bool tutorial = true;
         /// <summary>
         /// List of players that are in the Room
         /// </summary>
@@ -168,6 +179,7 @@ using Mirror;
                     SceneLoadedForPlayer(conn, roomPlayer);
             }
         }
+    
 
         void SceneLoadedForPlayer(NetworkConnection conn, GameObject roomPlayer)
         {
@@ -349,6 +361,18 @@ using Mirror;
             }
         }
 
+        public void TogTutorial() 
+        {
+            if (!tutorial)
+            {
+                tutorial = true;
+            }
+            else {
+                tutorial = false;
+            }
+           
+        }
+
         /// <summary>
         /// This causes the server to switch scenes and sets the networkSceneName.
         /// <para>Clients that connect to this server will automatically switch to this scene. This is called autmatically if onlineScene or offlineScene are set, but it can be called from user code to switch scenes again while the game is in progress. This automatically sets clients to be not-ready. The clients must call NetworkClient.Ready() again to participate in the new scene.</para>
@@ -416,6 +440,11 @@ using Mirror;
                 return;
             }
 
+            if (string.IsNullOrEmpty(TutorialScene))
+            {
+                logger.LogError("NetworkRoomManagerExtTest TutorialScene is empty. Set the TutorialScene in the inspector for the NetworkRoomMangaer");
+                return;
+            }
             OnRoomStartServer();
         }
 
@@ -612,8 +641,13 @@ using Mirror;
         /// </summary>
         public virtual void OnRoomServerPlayersReady()
         {
-            // all players are readyToBegin, start the game
-            ServerChangeScene(GameplayScene);
+        // all players are readyToBegin, start the game
+        if (tutorial) {
+            ServerChangeScene(TutorialScene);
+        }
+        else {
+            ServerChangeScene(GameplayScene); 
+        }
         }
 
         /// <summary>

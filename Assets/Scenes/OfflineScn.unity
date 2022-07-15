@@ -15477,7 +15477,10 @@ MonoBehaviour:
   RecogPlayer1: 0
   RecogPlayer2: 0
   RecogPlayer3: 0
-  tutorial: 1
+  firstToFinish: {fileID: 0}
+  secondToFinish: {fileID: 0}
+  thirdToFinish: {fileID: 0}
+  tutorial: 0
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0

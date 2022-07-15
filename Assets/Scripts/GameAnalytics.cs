@@ -14,7 +14,7 @@ public class GameAnalytics : NetworkBehaviour
     public List<int> M6_DificuldadeDosItensDaLista = new List<int>();
     public int M7_QuantidadeDeVezesQueTentouSeHidratar = 0;
     public int M8_QuantidadeDeVezesQueSeHidratou = 0;
-    public List<string> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<string>();
+    public List<float> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<float>();
     public int M10_AcionamentosDoBotaoDeInteracaoSocial = 0;
     public int M11_AcionamentosDoBotaoDeDoacaoDeCupom = 0;
     public int M12_AcionamentosDoBotaoDeJogadorMaisProximo = 0;
@@ -42,7 +42,7 @@ public class GameAnalytics : NetworkBehaviour
         public List<int> M6_DificuldadeDosItensDaLista = new List<int>();
         public int M7_QuantidadeDeVezesQueTentouSeHidratar;
         public int M8_QuantidadeDeVezesQueSeHidratou;
-        public List<string> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<string>();
+        public List<float> M9_ValorDaBarraDeEnergiaQuandoSeHidratou = new List<float>();
         public int M10_AcionamentosDoBotaoDeInteracaoSocial;
         public int M11_AcionamentosDoBotaoDeDoacaoDeCupom;
         public int M12_AcionamentosDoBotaoDeJogadorMaisProximo;
@@ -70,12 +70,16 @@ public class GameAnalytics : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P)) 
+        /*if (Input.GetKeyDown(KeyCode.P)) 
         {
             SaveAll();
+        }*/
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AllSaveAll();
         }
     }
-  
+
 
     /*
     [Command]
@@ -102,7 +106,23 @@ public class GameAnalytics : NetworkBehaviour
         System.IO.File.WriteAllText(path, all);
     }*/
 
-    
+    public void AllSaveAll() 
+    {
+        GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject gameobject in arrayGO)
+        {
+            NetworkIdentity nId = gameobject.GetComponent<NetworkIdentity>();
+            ClientSaveAll(nId.connectionToClient);
+        }
+        
+    }
+
+    [TargetRpc]
+    public void ClientSaveAll(NetworkConnection client) 
+    {
+        SaveAll();
+    }
+
     [Command]
     public void SaveAll() 
     {
@@ -134,9 +154,13 @@ public class GameAnalytics : NetworkBehaviour
         analytics.M25_QuantidadeDeVezesQueInteragiu = M25_QuantidadeDeVezesQueInteragiu;
 
         string json = JsonUtility.ToJson(analytics);
-
-        string path = "D:/GameDevGeral/FunnyPlacesMatchRecord/MatchAnalytics0.json";
-        string basepath = "D:/GameDevGeral/FunnyPlacesMatchRecord/MatchAnalytics";
+        
+        if (!System.IO.Directory.Exists(Application.persistentDataPath+"/FunnyPlacesMatchRecord")) 
+        {
+            System.IO.Directory.CreateDirectory(Application.persistentDataPath + "/FunnyPlacesMatchRecord");
+        }
+        string path = Application.persistentDataPath + "/FunnyPlacesMatchRecord/MatchAnalytics0.json";
+        string basepath = Application.persistentDataPath + "/FunnyPlacesMatchRecord/MatchAnalytics";
         int numfile = 0;
         string pathnum;
         while (System.IO.File.Exists(path))
@@ -146,91 +170,6 @@ public class GameAnalytics : NetworkBehaviour
             path = basepath + pathnum + ".json";
         }
         System.IO.File.WriteAllText(path, json);
-    }
-    
-
-    private string ListToString(List<string> list) 
-    {
-        //string delim = ",";
-        //string str = System.String.Join(delim, list);
-        string str = "[";
-        string current = "";
-        foreach (var i in list) 
-        {
-            current = i.ToString();
-            str += @"""" + current + @""",";
-        }
-        str = str.Remove(str.Length - 1);
-        str += "]";
-        return str;
-    }
-
-    /*
-        [Command]
-        public void CmdUpdateDistanciaTotalPercorrida(float trecho){
-            M1_DistânciaTotalPercorrida+=trecho;
-        }
-
-        [Command]
-        public void CmdUpdateDinheiroTotalGasto(float valor){
-
-        }
-
-        [Command]
-        public void CmdUpdateTempoParaDigitarASenha(float valor){
-
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeVezesQueTentouSeHidratar (){
-            M7_QuantidadeDeVezesQueTentouSeHidratar++;
-            Debug.Log("Chegou Comando");
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeVezesQueSeHidratou (){
-
-        }
-
-        [Command]
-        public void CmdUpdateAcionamentosDoBotaoDeInteracaoSocial (){
-            M10_AcionamentosDoBotaoDeInteracaoSocial++;
-        }
-
-        [Command]
-        public void CmdUpdateAcionamentosDoBotaoDeDoacaoDeCupom(){
-            M11_AcionamentosDoBotaoDeDoacaoDeCupom++;
-        }
-
-        [Command]
-        public void CmdUpdateAcionamentosDoBotaoDeBuscaDeJogadorMaisProximo(){
-            M12_AcionamentosDoBotaoDeJogadorMaisProximo++;
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeVezesEmQueAEgnergiaSeEsgotou(){
-            M16_QuantidadeDeVezesQueAEnergiaSeEsgotou++;
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeVezesQueOBotaoDeInteracaoSocialFicouDisponivel(){
-            M19_QuantidadeDeVezesQueOBotaoDeInteracaoSocialFicouDisponivel++;
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeAnimacoesAcionadas(){
-            M20_QuantidadeDeAnimacoesAcionadas++;
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeAcionamentosDaListaDeItens(){
-            M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
-        }
-
-        [Command]
-        public void CmdUpdateQuantidadeDeAcionamentosDaDicaDeItens(){
-
-        }
-        */
+    }  
 
 }

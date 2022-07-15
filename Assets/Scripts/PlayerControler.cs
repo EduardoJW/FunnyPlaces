@@ -40,7 +40,12 @@ public class PlayerControler : NetworkBehaviour
     public GameObject playerCamera;
     private Camera cam;
 
-
+    public GameObject self;
+    public GameObject roomPlayer;
+    public GameObject Airplane;
+    public Camera AirplaneCam;
+    public bool isFlying;
+    public int charId;
     private GameObject clickedObject;
     [Header("Interaction Variables")]
     public float interactDistance;
@@ -95,19 +100,25 @@ public class PlayerControler : NetworkBehaviour
             cam = playerCamera.GetComponent<Camera>();
             playerIdNumber = getCharacterId();
             CmdRegisterPlayerNumberOnServer(playerIdNumber);
+            GAUpdate(playerIdNumber);
             switch (playerIdNumber) {
                 case 1:
+                    AdjustPlayerPos(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p1Hotel);
                     CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p1CharId);
                     break;
                 case 2:
+                    AdjustPlayerPos(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p2Hotel);
                     CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p2CharId);
                     break;
                 case 3:
+                    AdjustPlayerPos(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p3Hotel);
                     CmdChangePlayerCharacterModel(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().p3CharId);
                     break;
 
             }
         }
+
+
 
         if (!isServer) {
             DisableServerControls();
@@ -116,6 +127,7 @@ public class PlayerControler : NetworkBehaviour
         if (isLocalPlayer)
         {
             if (SceneManager.GetActiveScene().name == "MainTown") {
+                Airplane = GameObject.Find("WinnerPlane");
                 RegisterMissionLocalPlayerMissionItemsGameOptions(playerIdNumber);
                 showWellcomePopUp();
                 energyBar.value = 1f;
@@ -133,7 +145,7 @@ public class PlayerControler : NetworkBehaviour
                 RegisterMissionLocalPlayerMissionItemsGameOptions(playerIdNumber);
                 showWellcomePopUpRecognition();
                 energyBar.value = 1f;
-                energyBarConsumeRate = 0.0001f;
+                energyBarConsumeRate = 0;
             }
         }
 
@@ -150,75 +162,262 @@ public class PlayerControler : NetworkBehaviour
         // movement for local player
         if (!isLocalPlayer) return;
 
-
-        float x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
-        float z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
-
-        transform.Rotate(0, x, 0);
-        transform.Translate(0, 0, z);
-
-        if (z == 0) {
-            animatorController.SetBool("isWalking", false);
-            animatorController.SetBool("isWalkingBackwards", false);
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            CmdStartUpdateFinishedPlayersLocal(self);
         }
+        if (!isFlying)
+        {
+            float x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
+            float z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
 
-        if (z > 0) {
-            animatorController.SetBool("isWalking", true);
-            animatorController.SetBool("isWalkingBackwards", false);
-        } else if (z < 0) {
-            animatorController.SetBool("isWalking", false);
-            animatorController.SetBool("isWalkingBackwards", true);
-        }
+            transform.Rotate(0, x, 0);
 
-        if (z != 0) {
-            if(SceneManager.GetActiveScene().name == "MainTown") {
-                CmdUpdateMovimento();
-                ConsumeEnergyWalking();
-            }
-            if(SceneManager.GetActiveScene().name == "TutorialMovimentacao") 
+            if (energyBar.value != 0)
             {
-                CmdUpdateMovimentoTutorial();
-            }
-        }
+                transform.Translate(0, 0, z);
 
-        //get lef mouse button click
-        if (Input.GetMouseButtonDown(0)) {
-            Debug.Log("name");
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit)) {
-                clickedObject = hit.collider.gameObject;
-                if (clickedObject.tag == "Pickupable") {
-                    gameObject.transform.Find("HUD/CreditCardMachine").gameObject.SetActive(true);
-                    if (Vector3.Distance(transform.position, clickedObject.transform.position) <= interactDistance) {
-                        Destroy(clickedObject);
-                    } else {
-                        Debug.Log("O objeto está muito longe!");
+                if (z == 0)
+                {
+                    animatorController.SetBool("isWalking", false);
+                    animatorController.SetBool("isWalkingBackwards", false);
+                }
+
+                if (z > 0)
+                {
+                    animatorController.SetBool("isWalking", true);
+                    animatorController.SetBool("isWalkingBackwards", false);
+                }
+                else if (z < 0)
+                {
+                    animatorController.SetBool("isWalking", false);
+                    animatorController.SetBool("isWalkingBackwards", true);
+                }
+
+                if (z != 0)
+                {
+                    if (SceneManager.GetActiveScene().name == "MainTown")
+                    {
+                        CmdUpdateMovimento();
+                        ConsumeEnergyWalking();
                     }
-                } else if (clickedObject.tag == "RefreshmentPoint") {
-                    UseRefreshmentPoint(clickedObject.tag);
-                } else if (clickedObject.tag == "NPC_Helper") {
-                    Debug.Log("HELP");
-                    ShowHelpMessage();
-                } else if (clickedObject.tag == "Player") {
-                    if (Vector3.Distance(transform.position, clickedObject.transform.position) <= interactDistance) {
-                        if ((timeLastInteraction == 0.0f) || ((Time.time - timeLastInteraction) > minimumTimeBetweenInteractions)) {
-                            timeLastInteraction = Time.time;
-                            RefreshThroughInteraction();
-                        }
-                    } else {
-
+                    if (SceneManager.GetActiveScene().name == "TutorialMovimentacao")
+                    {
+                        CmdUpdateMovimentoTutorial();
                     }
-
                 }
             }
+
+            //get lef mouse button click
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("name");
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit))
+                {
+                    clickedObject = hit.collider.gameObject;
+                    if (clickedObject.tag == "Pickupable")
+                    {
+                        gameObject.transform.Find("HUD/CreditCardMachine").gameObject.SetActive(true);
+                        if (Vector3.Distance(transform.position, clickedObject.transform.position) <= interactDistance)
+                        {
+                            Destroy(clickedObject);
+                        }
+                        else
+                        {
+                            Debug.Log("O objeto está muito longe!");
+                        }
+                    }
+                    else if (clickedObject.tag == "RefreshmentPoint")
+                    {
+                        UseRefreshmentPoint(clickedObject.tag);
+                    }
+                    else if (clickedObject.tag == "NPC_Helper")
+                    {
+                        ShowHelpMessage(clickedObject);
+                    }
+                    else if (clickedObject.tag == "Player")
+                    {
+                        if (Vector3.Distance(transform.position, clickedObject.transform.position) <= interactDistance)
+                        {
+                            if ((timeLastInteraction == 0.0f) || ((Time.time - timeLastInteraction) > minimumTimeBetweenInteractions))
+                            {
+                                timeLastInteraction = Time.time;
+                                RefreshThroughInteraction();
+                            }
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+                }
+            }
+
+
+
         }
+    }
 
 
+    [Command]
+    public void AdjustPlayerPos(string hotel)
+    {
+        switch (hotel)
+        {
+            case ("SonoBom"):
+                gameObject.transform.position = new Vector3(86.88f, 0, 39.74f);
+                RpcNotifyClientAdjustPlayer(hotel);
+                break;
+            case ("DormeBem"):
+                gameObject.transform.position = new Vector3(57.16f, 0, -78.74f);
+                RpcNotifyClientAdjustPlayer(hotel);
+                break;
+            case ("RoncoAlto"):
+                RpcNotifyClientAdjustPlayer(hotel);
+                gameObject.transform.position = new Vector3(-29.31f, 0, 75.4f);
+                break;
 
+
+        }
+    }
+
+    [ClientRpc]
+    public void RpcNotifyClientAdjustPlayer(string hotel)
+    {
+        switch (hotel)
+        {
+            case ("SonoBom"):
+                gameObject.transform.position = new Vector3(86.88f, 0, 39.74f);
+                break;
+            case ("DormeBem"):
+                gameObject.transform.position = new Vector3(57.16f, 0, -78.74f);
+                break;
+            case ("RoncoAlto"):
+                gameObject.transform.position = new Vector3(-29.31f, 0, 75.4f);
+                break;
+
+
+        }
+    }
+
+    [Command]
+    public void CmdUpdatePlayerFinishedServer(int place, GameObject self)
+    {
+        GameObject server = GameObject.Find("RoomManagerExtTest");
+        switch (place)
+        {
+            case 1:
+                server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish = self;
+                break;
+            case 2:
+                server.GetComponent<NetworkRoomManagerExtTest>().secondToFinish = self;
+                break;
+            case 3:
+                server.GetComponent<NetworkRoomManagerExtTest>().thirdToFinish = self;
+                break;
+        }
 
     }
 
+    [Command]
+    public void CmdStartUpdateFinishedPlayersLocal(GameObject self)
+    {
+        RpcUpdateFinishedPlayersLocal(self);
+    }
+
+    [Command]
+    public void CmdEndGameRequest() { 
+    GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("Player");
+            foreach (GameObject gameobject in arrayGO)
+            {
+                NetworkIdentity nId = gameobject.GetComponent<NetworkIdentity>();
+                EndGameProcedure(nId.connectionToClient, gameobject);
+            }
+    }
+
+    public void AirPlaneCameraChange()
+    {
+        Airplane.transform.Find("WinnerPlane/Main_Camera").gameObject.SetActive(true);
+        cam = Airplane.GetComponent<Camera>();
+        isFlying = true;
+        Airplane.transform.Find("WinnerPlane").GetComponent<Plane_Fly>().isFlying = true;
+    }
+
+
+    [Command]
+    public void CmdTogetherEnd()
+    {
+        GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject gameobject in arrayGO)
+        {
+            NetworkIdentity nId = gameobject.GetComponent<NetworkIdentity>();
+            TogetherEndProcedure(nId.connectionToClient, gameobject);
+        }
+    }
+
+    
+
+    [TargetRpc]
+    public void TogetherEndProcedure(NetworkConnection client, GameObject self) 
+    {
+        self.transform.Find("HUD/GameEndMessageWindow").gameObject.SetActive(false);
+        self.transform.GetComponent<PlayerControler>().AirPlaneCameraChange();
+    }
+
+    [TargetRpc]
+    public void EndGameProcedure(NetworkConnection client, GameObject self) 
+    {
+        self.transform.Find("HUD/GameEndMessageWindow").gameObject.SetActive(true);
+        GameObject server = GameObject.Find("RoomManagerExtTest");
+        string textGeneric = "Parabéns você conseguiu ajudar a preparar"
+                + " a festa do seu amigo.";
+        if (server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish == self)
+        {
+            self.transform.Find("HUD/GameEndMessageWindow/Panel_PopUpWindow/Panel_Content/GameEndMessage").gameObject.GetComponent<Text>().text = textGeneric + "\n E você foi o primeiro"
+                + " a completar tudo, por isso você ganha um prêmio especial.\nUma viagem de avião pela cidade. Você quer ir sozinho ou quer levar seus amigos junto?";
+            self.transform.Find("HUD/GameEndMessageWindow/Panel_PopUpWindow/Panel_Content/SoloButton").gameObject.SetActive(true);
+            self.transform.Find("HUD/GameEndMessageWindow/Panel_PopUpWindow/Panel_Content/EveryoneButton").gameObject.SetActive(true);
+        }
+        else 
+        {
+            self.transform.Find("HUD/GameEndMessageWindow/Panel_PopUpWindow/Panel_Content/GameEndMessage").gameObject.GetComponent<Text>().text = textGeneric + "\n E quem sabe uma surpresa não te aguarda?";
+        }
+    }
+
+    [ClientRpc]
+    public void RpcUpdateFinishedPlayersLocal(GameObject self) 
+    {
+        GameObject server = GameObject.Find("RoomManagerExtTest");
+        if (server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish && server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish != self) 
+        {
+            if (server.GetComponent<NetworkRoomManagerExtTest>().secondToFinish && server.GetComponent<NetworkRoomManagerExtTest>().secondToFinish != self)
+            {
+                if (server.GetComponent<NetworkRoomManagerExtTest>().thirdToFinish && server.GetComponent<NetworkRoomManagerExtTest>().thirdToFinish != self)
+                {
+                    Debug.Log("Player Already accounted for");
+                }
+                else if(!server.GetComponent<NetworkRoomManagerExtTest>().thirdToFinish)
+                {
+                    server.GetComponent<NetworkRoomManagerExtTest>().thirdToFinish = self;
+                    CmdUpdatePlayerFinishedServer(3,self);
+                    CmdEndGameRequest();
+                }
+            }
+            else if (!server.GetComponent<NetworkRoomManagerExtTest>().secondToFinish)
+            {
+                server.GetComponent<NetworkRoomManagerExtTest>().secondToFinish = self;
+                CmdUpdatePlayerFinishedServer(2,self);
+            }
+        }
+        else if (!server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish)
+        {
+            server.GetComponent<NetworkRoomManagerExtTest>().firstToFinish = self;
+            CmdUpdatePlayerFinishedServer(1,self);
+        }
+    }
 
     [Command]
     public void CmdChangePlayerCharacterModel(int charNumber) {
@@ -247,6 +446,34 @@ public class PlayerControler : NetworkBehaviour
             RpcNotifyClientsPlayerRecognition();
         }
 
+    }
+
+    [Command]
+    public void GAUpdate(int charNumber) 
+    {
+        GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("RoomPlayer");
+        foreach (GameObject gameobject in arrayGO)
+        {
+            charId = charNumber;
+            if (gameobject.GetComponent<NetworkRoomPlayerExtTest>().index == (charNumber-1))
+            {
+                roomPlayer = gameobject;
+            }
+        }
+        GAUpdatePlayer(charNumber);
+    }
+    [ClientRpc]
+    public void GAUpdatePlayer(int charNumber)
+    {
+        GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("RoomPlayer");
+        foreach (GameObject gameobject in arrayGO)
+        {
+            charId = charNumber;
+            if (gameobject.GetComponent<NetworkRoomPlayerExtTest>().index == (charNumber-1))
+            {
+                roomPlayer = gameobject;
+            }
+        }
     }
 
     public void CmdChangeNpcCharacterModels(int charNumber)
@@ -448,6 +675,7 @@ public class PlayerControler : NetworkBehaviour
 
         gameObject.transform.Find("HUD/WellcomeMessagePopUp").gameObject.SetActive(true);
         gameObject.transform.Find("HUD/WellcomeMessagePopUp/Panel_PopUpWindow/Panel_Content/WellcomeMessage").gameObject.GetComponent<Text>().text = "Bem vindo ao tutorial de movimentação"
+            +"\nNão precisa se preocupar com as suas tarefas por enquanto"
             +"\nAqui você é livre para se mover e aprender os comandos sem pressa";
     }
 
@@ -488,6 +716,11 @@ public class PlayerControler : NetworkBehaviour
 
     public void ConsumeEnergyWalking(){
         energyBar.value -=energyBarConsumeRate;
+        if (energyBar.value <= 0) 
+        {
+            energyBar.value = 0;
+            CmdUpdateQuantidadeDeVezesQueAEnergiaSeEsgotou();
+        }
     }
 
     public void UseRefreshmentPoint(string clickedObjectTag){
@@ -518,9 +751,9 @@ public class PlayerControler : NetworkBehaviour
 
     }
 
-    public void ShowHelpMessage()
+    public void ShowHelpMessage(GameObject clickedObject)
     {
-        gameObject.transform.Find("HUD/NPC_Hint").gameObject.GetComponent<TMP_Text>().text = "Acho que tem um vendedor de cachorro quente aqui na rua" ;
+        gameObject.transform.Find("HUD/NPC_Hint").gameObject.GetComponent<TMP_Text>().text = clickedObject.transform.GetComponent<NPC_Dicas>().dica;
         gameObject.transform.Find("HUD/NPC_Hint").gameObject.SetActive(true);
         gameObject.transform.Find("HUD/NPC_Hint").gameObject.GetComponent<Animation>().Play("ServerMessageFading");
     }
@@ -552,12 +785,23 @@ public class PlayerControler : NetworkBehaviour
 
     [Command]
     public void CmdUpdateMovimento(){
-        gameObject.GetComponent<GameAnalytics>().M1_DistânciaTotalPercorrida++;      
+        roomPlayer.GetComponent<GameAnalytics>().M1_DistânciaTotalPercorrida++;      
     }
+    [Command]
+    public void CmdUpdateBotadoDeJogadorMaisProximo()
+    {
+        roomPlayer.GetComponent<GameAnalytics>().M12_AcionamentosDoBotaoDeJogadorMaisProximo++;
+    }
+    [Command]
+    public void CmdUpdateLevouAmigosSobrevoo()
+    {
+        roomPlayer.GetComponent<GameAnalytics>().M22_OpcaoDeLevarOsAmigosAoSobrevoo = true;
+    }
+
     [Command]
     public void CmdUpdateMovimentoTutorial()
     {
-        gameObject.GetComponent<GameAnalytics>().M5_DistânciaPercorridaDuranteOTutorial++;
+        roomPlayer.GetComponent<GameAnalytics>().M5_DistânciaPercorridaDuranteOTutorial++;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M5_DistânciaPercorridaDuranteOTutorial++;
 
     }
@@ -565,47 +809,52 @@ public class PlayerControler : NetworkBehaviour
     [Command]
     public void CmdUpdateDinheiroTotalGasto(float valor)
     {
-        gameObject.GetComponent<GameAnalytics>().M2_TotalDeDinheiroGasto += valor;
+        roomPlayer.GetComponent<GameAnalytics>().M2_TotalDeDinheiroGasto += valor;
     }
 
     [Command]
     public void CmdUpdatetotalCreditos(float valor)
     {
-        gameObject.GetComponent<GameAnalytics>().M21_CreditosAoFinalDaPartida -= valor;
+        roomPlayer.GetComponent<GameAnalytics>().M21_CreditosAoFinalDaPartida -= valor;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M21_CreditosAoFinalDaPartida -= valor;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueTentouSeHidratar()
     {
-        gameObject.GetComponent<GameAnalytics>().M7_QuantidadeDeVezesQueTentouSeHidratar++;
+        roomPlayer.GetComponent<GameAnalytics>().M7_QuantidadeDeVezesQueTentouSeHidratar++;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M7_QuantidadeDeVezesQueTentouSeHidratar++;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueSeHidratou(){
-        gameObject.GetComponent<GameAnalytics>().M8_QuantidadeDeVezesQueSeHidratou++;
+        roomPlayer.GetComponent<GameAnalytics>().M8_QuantidadeDeVezesQueSeHidratou++;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M8_QuantidadeDeVezesQueSeHidratou++;
     }
 
     [Command]
     public void CmdUpdateValorDaBarraDeEnergiaQuandoSeHidratou(float valor)
     {
-        string val = valor.ToString();
-        gameObject.GetComponent<GameAnalytics>().M9_ValorDaBarraDeEnergiaQuandoSeHidratou.Add(val);
-        //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M9_ValorDaBarraDeEnergiaQuandoSeHidratou.Add(val);
+        roomPlayer.GetComponent<GameAnalytics>().M9_ValorDaBarraDeEnergiaQuandoSeHidratou.Add(valor);
+        
+    }
+    
+    [Command]
+    public void CmdUpdateQuantidadeDeVezesQueAEnergiaSeEsgotou()
+    {
+        roomPlayer.GetComponent<GameAnalytics>().M16_QuantidadeDeVezesQueAEnergiaSeEsgotou++;
     }
 
     [Command]
     public void CmdUpdateAcionouListaDeItens()
     {
-        gameObject.GetComponent<GameAnalytics>().M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
+        roomPlayer.GetComponent<GameAnalytics>().M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens++;
     }
 
     [Command]
     public void CmdUpdateQuantidadeDeVezesQueInteragiu(){
-        gameObject.GetComponent<GameAnalytics>().M25_QuantidadeDeVezesQueInteragiu++;
+        roomPlayer.GetComponent<GameAnalytics>().M25_QuantidadeDeVezesQueInteragiu++;
         //GameObject.Find("GameAnalyticsTracker").GetComponent<GameAnalytics>().M25_QuantidadeDeVezesQueInteragiu++;
     }
 

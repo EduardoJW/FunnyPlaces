@@ -51,6 +51,8 @@ public class PlayerQuestionairie : MonoBehaviour
         solicitarQuestionarioButton.interactable = false;
         foreach (GameObject player in GameObject.FindGameObjectsWithTag("RoomPlayer")){
             player.GetComponent<RoomPlayerUIControler>().RpcShowQuestionnaire(int.Parse(solicitarQuestionarioButton.name.Substring(solicitarQuestionarioButton.name.Length-1)));
+            player.transform.Find("QuestionnaireCanvas").gameObject.SetActive(true);
+            player.transform.Find("QuestionnaireCanvas").transform.Find("PrePlayQuestionnaire").transform.position = new Vector3(999, 999, 999);
         }
         
     }

@@ -3629,6 +3629,7 @@ GameObject:
   - component: {fileID: 3562521143444639055}
   - component: {fileID: -3816405493052746053}
   - component: {fileID: 8278736510415952803}
+  - component: {fileID: 2981820322828524019}
   m_Layer: 0
   m_Name: Npc
   m_TagString: Untagged
@@ -3741,6 +3742,18 @@ MonoBehaviour:
   destinationDistance: 0
   walkspeed: 0
   currentTarget: 0
+--- !u!114 &2981820322828524019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3562521143435212787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05028a6d610356a4ab143c85f282ccb6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3562521143435213001
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Pickupable : MonoBehaviour
 {
     public float interactRadius = 3.0f;
+    public string itemName;
 
     void Start(){
 

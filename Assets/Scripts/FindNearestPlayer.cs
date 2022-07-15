@@ -9,14 +9,18 @@ public class FindNearestPlayer : MonoBehaviour
     public float timeNearestPlayerIndicationStart=0.0f;
     public float maximumTimeNearestPlayerIndicationShowed = 20.0f;
     public float minimumDeltaTimeToAllowPlayerSearch = 40.0f;
-    
+    public GameObject Arrow;
+    public GameObject ArrowObject;
+    public GameObject Player;
+
     private int localPlayerNumber;
     public GameObject[] gamePlayersArray;
 
     // Start is called before the first frame update
     void Start()
     {
-        indicationArrow = gameObject.transform.root.gameObject.transform.Find("Arrow").gameObject;
+        indicationArrow = Arrow;
+        
     }
 
     // Update is called once per frame
@@ -42,6 +46,7 @@ public class FindNearestPlayer : MonoBehaviour
     public void showNearestPlayer(){
         if ((timeNearestPlayerIndicationStart == 0.0) || ((Time.time - timeNearestPlayerIndicationStart) > minimumDeltaTimeToAllowPlayerSearch)){
             timeNearestPlayerIndicationStart = Time.time;
+            Player.GetComponent<PlayerControler>().CmdUpdateBotadoDeJogadorMaisProximo();
             pointToNearestPlayer();
             indicationArrow.SetActive(true);
             gameObject.GetComponent<Button>().interactable = false;
@@ -73,7 +78,7 @@ public class FindNearestPlayer : MonoBehaviour
             }
         }
         differenceVector = gamePlayersArray[indiceMenorDistancia].transform.position-localPlayer.transform.position;
-        indicationArrow.transform.rotation = Quaternion.LookRotation(differenceVector.normalized);
+        ArrowObject.transform.LookAt(gamePlayersArray[indiceMenorDistancia].transform); 
                 
         
     }

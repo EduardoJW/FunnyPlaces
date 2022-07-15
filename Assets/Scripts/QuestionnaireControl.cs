@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
+
 
 public class QuestionnaireControl : MonoBehaviour
 {
     public Button sheet1NextButton;
     public Button sheet2NextButton;
     public Button sheet3NextButton;
-
+    public GameObject QuestionnaireSaver;
 
     // Start is called before the first frame update
     void Start()
@@ -33,14 +35,16 @@ public class QuestionnaireControl : MonoBehaviour
                     button1Interactable = false;
                     break;
                 }else{
-                    button1Interactable=true;
+                    gameObject.transform.root.gameObject.GetComponent<NetworkRoomPlayerExtTest>().RecordAnswers1();
+                    button1Interactable =true;
                 }
             }else if (i<11){
                 if (gameObject.transform.Find("PrePlayQuestionnaireContent/Sheet2/Pergunta" + i + "/RespostaPergunta" + i).gameObject.GetComponent<TMP_Dropdown>().value ==0){
                     button2Interactable = false;
                     break;
                 }else{
-                    button2Interactable=true;
+                    gameObject.transform.root.gameObject.GetComponent<NetworkRoomPlayerExtTest>().RecordAnswers2();
+                    button2Interactable =true;
                 }
             }else{
                 if (gameObject.transform.Find("PrePlayQuestionnaireContent/Sheet3/Pergunta" + i + "/RespostaPergunta" + i).gameObject.GetComponent<TMP_Dropdown>().value ==0){
@@ -48,6 +52,7 @@ public class QuestionnaireControl : MonoBehaviour
                     button3Interactable = false;
                     break;
                 }else{
+                    gameObject.transform.root.gameObject.GetComponent<NetworkRoomPlayerExtTest>().RecordAnswers3();
                     button3Interactable = true;
                 }
             }
@@ -72,6 +77,7 @@ public class QuestionnaireControl : MonoBehaviour
     }
 
     public void NotifyServer(){
+        gameObject.transform.root.gameObject.GetComponent<NetworkRoomPlayerExtTest>().SaveQuestionnaire();
         gameObject.transform.root.gameObject.GetComponent<RoomPlayerUIControler>().CmdNotifyServerQuestionaireCompleted(GameObject.FindGameObjectWithTag("PlayerOptionsContainer").GetComponent<PlayerChoiceTracking>().localPlayerPlayerNumber);
     }
 

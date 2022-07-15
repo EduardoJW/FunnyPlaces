@@ -3276,6 +3276,7 @@ GameObject:
   - component: {fileID: 5728790822355183368}
   - component: {fileID: 7871117896355051767}
   - component: {fileID: 6725147035860706642}
+  - component: {fileID: 8376597576770489577}
   m_Layer: 0
   m_Name: RoomPlayerFunnyPlacesExtTest
   m_TagString: RoomPlayer
@@ -3316,6 +3317,22 @@ MonoBehaviour:
   showRoomGUI: 1
   readyToBegin: 0
   index: 0
+  A1: 0
+  A2: 0
+  A3: 0
+  A4: 0
+  A5: 0
+  A6: 0
+  A7: 0
+  A8: 0
+  A9: 0
+  A10: 0
+  A11: 0
+  A12: 0
+  A13: 0
+  A14: 0
+  A15: 0
+  Questionnaire: {fileID: 7681820868342672828}
 --- !u!114 &7871117896355051767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3361,6 +3378,45 @@ MonoBehaviour:
   player1Card: {fileID: 2783343845170642881}
   player2Card: {fileID: 1947907662145194811}
   player3Card: {fileID: 902748226408477661}
+--- !u!114 &8376597576770489577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877747081242182850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ab0cbb944e48744a57d9186a13db9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  "M1_Dist\xE2nciaTotalPercorrida": 0
+  M2_TotalDeDinheiroGasto: 0
+  M3_TempoParaDigitarASenha: []
+  M4_TempoParaEncontrarJogadoresNoTutorial: []
+  "M5_Dist\xE2nciaPercorridaDuranteOTutorial": 0
+  M6_DificuldadeDosItensDaLista: 
+  M7_QuantidadeDeVezesQueTentouSeHidratar: 0
+  M8_QuantidadeDeVezesQueSeHidratou: 0
+  M9_ValorDaBarraDeEnergiaQuandoSeHidratou: []
+  M10_AcionamentosDoBotaoDeInteracaoSocial: 0
+  M11_AcionamentosDoBotaoDeDoacaoDeCupom: 0
+  M12_AcionamentosDoBotaoDeJogadorMaisProximo: 0
+  M13_RecuperacaoDeUmItemPerdido: 
+  M14_TamanhoDaSenhaDigitada: 
+  M15_RazaoEntreValorDaCompraEValorDosItens: []
+  M16_QuantidadeDeVezesQueAEnergiaSeEsgotou: 0
+  M17_OrdemEmQueAdquiriuOItemDePrioridade: 0
+  M18_ObteveItemDeCombinacao: 0
+  M19_QuantidadeDeVezesQueOBotaoDeInteracaoSocialFicouDisponivel: 0
+  M20_QuantidadeDeAnimacoesAcionadas: 0
+  M21_CreditosAoFinalDaPartida: 2000
+  M22_OpcaoDeLevarOsAmigosAoSobrevoo: 0
+  M23_QuantidadeDeVezesQueAcionouOBotaoDeListaDeItens: 0
+  M24_QuantidadeDeVezesQueAcionouOBotaoDeDicaDeItem: 
+  M25_QuantidadeDeVezesQueInteragiu: 0
 --- !u!1 &880332483651403370
 GameObject:
   m_ObjectHideFlags: 0
@@ -22789,7 +22845,7 @@ GameObject:
   - component: {fileID: 4748932763464432807}
   m_Layer: 0
   m_Name: PrePlayQuestionnaire
-  m_TagString: Untagged
+  m_TagString: Questionnaire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22867,6 +22923,7 @@ MonoBehaviour:
   sheet1NextButton: {fileID: 7583663661521473616}
   sheet2NextButton: {fileID: 1503748875451195701}
   sheet3NextButton: {fileID: 2609399175264436956}
+  QuestionnaireSaver: {fileID: 0}
 --- !u!1 &7684012426217708047
 GameObject:
   m_ObjectHideFlags: 0

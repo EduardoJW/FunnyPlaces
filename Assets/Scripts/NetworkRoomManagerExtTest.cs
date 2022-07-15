@@ -68,7 +68,11 @@ using Mirror;
         public int RecogPlayer1 = 0;
         public int RecogPlayer2 = 0;
         public int RecogPlayer3 = 0;
-        public bool tutorial = true;
+        public GameObject firstToFinish;
+        public GameObject secondToFinish;
+        public GameObject thirdToFinish;
+
+        public bool tutorial = false;
         /// <summary>
         /// List of players that are in the Room
         /// </summary>

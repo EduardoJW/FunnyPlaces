@@ -73,11 +73,11 @@ public class GameAnalytics : NetworkBehaviour
         /*if (Input.GetKeyDown(KeyCode.P)) 
         {
             SaveAll();
-        }*/
+        }
         if (Input.GetKeyDown(KeyCode.L))
         {
             AllSaveAll();
-        }
+        }*/
     }
 
 

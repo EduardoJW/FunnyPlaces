@@ -21,6 +21,17 @@ public class CameraControler : MonoBehaviour
         transform.Translate(0,0,z);
     }
 
+    public void callCommandtoSaveAll() 
+    {
+     
+        GameObject[] arrayGO = GameObject.FindGameObjectsWithTag("RoomPlayer");
+        foreach (GameObject gameobject in arrayGO)
+        {
+            gameobject.GetComponent<GameAnalytics>().AllSaveAll();
+        }
+        
+    }
+
     public void MoveBackward(){
         gameObject.transform.Translate(Vector3.right * Time.deltaTime * 50.0f,Space.World);
     }

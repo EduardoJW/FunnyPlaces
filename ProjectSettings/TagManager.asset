@@ -20,6 +20,7 @@ TagManager:
   - Recog_target_1
   - Recog_target_2
   - Recog_target_3
+  - Tree
   layers:
   - Default
   - TransparentFX
